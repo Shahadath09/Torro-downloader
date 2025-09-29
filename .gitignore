@@ -1,0 +1,12 @@
+# Kivy and Buildozer
+*.pyc
+__pycache__/
+.buildozer/
+bin/
+dist/
+build/
+*.apk
+*.aab
+.idea/
+*.iml
+.DS_Store

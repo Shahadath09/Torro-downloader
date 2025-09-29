@@ -1,6 +1,6 @@
+# This workflow runs on pushes to the main branch or can be triggered manually
 name: Build Android APK with Buildozer
 
-# This workflow runs on pushes to the main branch or can be triggered manually
 on:
   push:
     branches:
@@ -37,7 +37,7 @@ jobs:
         run: |
           sudo dpkg --add-architecture i386
           sudo apt-get update
-          sudo apt-get install -y git zip unzip openjdk-11-jdk python3-pip autoconf libtool pkg-config zlib1g-dev libncurses5-dev libncursesw5-dev libtinfo5 cmake libffi-dev libssl-dev
+          sudo apt-get install -y git zip unzip openjdk-11-jdk python3-pip autoconf libtool pkg-config zlib1g-dev libncurses5-dev libncursesw5-dev libtinfo6 cmake libffi-dev libssl-dev
           pip install --upgrade "cython<3.0" buildozer
           
       - name: Build the APK
@@ -45,7 +45,7 @@ jobs:
           buildozer -v android release
 
       - name: Upload APK as Artifact
-        uses: actions/upload-artifact@v4 # <-- THIS IS THE FIX
+        uses: actions/upload-artifact@v4
         with:
-          name: app-release.apk # Upload the file directly, not a directory
+          name: app-release.apk
           path: bin/*.apk

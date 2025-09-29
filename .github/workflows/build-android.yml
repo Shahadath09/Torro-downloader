@@ -37,10 +37,10 @@ jobs:
         run: |
           sudo dpkg --add-architecture i386
           sudo apt-get update
-          sudo apt-get install -y git zip unzip openjdk-11-jdk python3-pip autoconf libtool pkg-config zlib1g-dev libncurses5-dev libncursesw5-dev libtinfo6 cmake libffi-dev libssl-dev
+          sudo apt-get install -y git zip unzip openjdk-17-jdk python3-pip autoconf libtool pkg-config zlib1g-dev libncurses5-dev libncursesw5-dev libtinfo6 cmake libffi-dev libssl-dev
           pip install --upgrade pip setuptools wheel
           pip install --upgrade "cython<3.0" buildozer
-          pip install kivy[base] kivy_examples
+          pip install kivy[base] kivy_examples yt-dlp certifi
 
       - name: Install Android SDK Command-line Tools
         run: |
@@ -55,10 +55,11 @@ jobs:
       - name: Install Android SDK Build Tools
         run: |
           yes | sdkmanager --licenses || true
-          sdkmanager "build-tools;33.0.0" "platform-tools" "platforms;android-31"
+          sdkmanager "build-tools;33.0.0" "platform-tools" "platforms;android-31" "extras;android;m2repository" "extras;google;m2repository" "ndk;25.2.9519653" "cmdline-tools;latest"
 
       - name: Build the APK
         run: |
+          echo "PATH before build: $PATH"
           buildozer -v android release
 
       - name: Upload APK as Artifact

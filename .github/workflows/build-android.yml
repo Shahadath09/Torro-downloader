@@ -39,12 +39,24 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y git zip unzip openjdk-11-jdk python3-pip autoconf libtool pkg-config zlib1g-dev libncurses5-dev libncursesw5-dev libtinfo6 cmake libffi-dev libssl-dev
           pip install --upgrade "cython<3.0" buildozer
-      
+
+      - name: Install Android SDK Command-line Tools
+        run: |
+          # Download the latest command-line tools from Google
+          wget https://dl.google.com/android/repository/commandlinetools-linux-10406996_latest.zip
+          unzip -qq commandlinetools-linux-10406996_latest.zip
+          
+          # Setup SDK directories and move tools into the correct place
+          mkdir -p ~/.buildozer/android/platform/android-sdk/cmdline-tools
+          mv cmdline-tools ~/.buildozer/android/platform/android-sdk/cmdline-tools/latest
+          
+          # Update the PATH to include the sdkmanager and other tools
+          echo "ANDROID_HOME=$HOME/.buildozer/android/platform/android-sdk" >> $GITHUB_ENV
+          echo "$HOME/.buildozer/android/platform/android-sdk/cmdline-tools/latest/bin" >> $GITHUB_PATH
+
       - name: Install Android SDK Build Tools
         run: |
-          # Accept SDK licenses automatically
           yes | sdkmanager --licenses || true
-          # Install specific Android build tools and platform tools
           sdkmanager "build-tools;33.0.0" "platform-tools"
 
       - name: Build the APK

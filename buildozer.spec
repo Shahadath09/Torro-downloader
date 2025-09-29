@@ -8,6 +8,9 @@ package.name = torro
 # (str) Package domain (needed for Android)
 package.domain = org.torro
 
+# (str) Application versioning. This is the fix.
+version = 1.0
+
 # (str) Source code where the main.py live
 source.dir = .
 

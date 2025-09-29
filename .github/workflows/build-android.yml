@@ -49,6 +49,8 @@ jobs:
           mkdir -p ~/.buildozer/android/platform/android-sdk/cmdline-tools
           mv cmdline-tools-tmp/cmdline-tools ~/.buildozer/android/platform/android-sdk/cmdline-tools/latest
           rm -rf cmdline-tools-tmp commandlinetools-linux-10406996_latest.zip
+          # Symlink to 'tools' for Buildozer compatibility
+          ln -s ~/.buildozer/android/platform/android-sdk/cmdline-tools/latest ~/.buildozer/android/platform/android-sdk/tools
           echo "ANDROID_HOME=$HOME/.buildozer/android/platform/android-sdk" >> $GITHUB_ENV
           echo "$HOME/.buildozer/android/platform/android-sdk/cmdline-tools/latest/bin" >> $GITHUB_PATH
 

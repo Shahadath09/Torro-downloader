@@ -39,7 +39,14 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y git zip unzip openjdk-11-jdk python3-pip autoconf libtool pkg-config zlib1g-dev libncurses5-dev libncursesw5-dev libtinfo6 cmake libffi-dev libssl-dev
           pip install --upgrade "cython<3.0" buildozer
-          
+      
+      - name: Install Android SDK Build Tools
+        run: |
+          # Accept SDK licenses automatically
+          yes | sdkmanager --licenses || true
+          # Install specific Android build tools and platform tools
+          sdkmanager "build-tools;33.0.0" "platform-tools"
+
       - name: Build the APK
         run: |
           buildozer -v android release

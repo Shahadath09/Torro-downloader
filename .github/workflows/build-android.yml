@@ -38,26 +38,24 @@ jobs:
           sudo dpkg --add-architecture i386
           sudo apt-get update
           sudo apt-get install -y git zip unzip openjdk-11-jdk python3-pip autoconf libtool pkg-config zlib1g-dev libncurses5-dev libncursesw5-dev libtinfo6 cmake libffi-dev libssl-dev
+          pip install --upgrade pip setuptools wheel
           pip install --upgrade "cython<3.0" buildozer
+          pip install kivy[base] kivy_examples
 
       - name: Install Android SDK Command-line Tools
         run: |
-          # Download the latest command-line tools from Google
           wget https://dl.google.com/android/repository/commandlinetools-linux-10406996_latest.zip
-          unzip -qq commandlinetools-linux-10406996_latest.zip
-          
-          # Setup SDK directories and move tools into the correct place
+          unzip -qq commandlinetools-linux-10406996_latest.zip -d cmdline-tools-tmp
           mkdir -p ~/.buildozer/android/platform/android-sdk/cmdline-tools
-          mv cmdline-tools ~/.buildozer/android/platform/android-sdk/cmdline-tools/latest
-          
-          # Update the PATH to include the sdkmanager and other tools
+          mv cmdline-tools-tmp/cmdline-tools ~/.buildozer/android/platform/android-sdk/cmdline-tools/latest
+          rm -rf cmdline-tools-tmp commandlinetools-linux-10406996_latest.zip
           echo "ANDROID_HOME=$HOME/.buildozer/android/platform/android-sdk" >> $GITHUB_ENV
           echo "$HOME/.buildozer/android/platform/android-sdk/cmdline-tools/latest/bin" >> $GITHUB_PATH
 
       - name: Install Android SDK Build Tools
         run: |
           yes | sdkmanager --licenses || true
-          sdkmanager "build-tools;33.0.0" "platform-tools"
+          sdkmanager "build-tools;33.0.0" "platform-tools" "platforms;android-31"
 
       - name: Build the APK
         run: |
